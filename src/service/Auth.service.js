@@ -1,8 +1,23 @@
 import { api } from "./api";
 
 export const Register = async (data) => {
-    console.log(data);
+  try {
+    const res = await api.post("/register", data);
+    return res;
+  } catch (e) {
+    return { error: true, msg: e.message };
+  }
+};
 
-     const res = await api.post("/register", data);
-     return res;
+export const Login = async (formData) => {
+  try {
+    const res = await api.post("/login", formData);
+    const { data } = res;
+    if (data.token) {
+      localStorage.setItem("auth", JSON.stringify(data.token));
+    }
+    return res;
+  } catch (e) {
+    return { error: true, msg: e.message };
+  }
 };
